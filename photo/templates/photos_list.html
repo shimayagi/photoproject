@@ -1,0 +1,72 @@
+  <div class="album py-5 bg-light">
+    <!-- Bootstrapのグリッドシステムを適用 -->
+    <div class="container">
+      <!-- 行要素を配置 -->
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <!-- レコードが格納されたobject_listからレコードを1行ずつ取り出す -->
+        <!-- IndexViewで取得したPhoto postsテーブルのレコードはContextの辞書に格納されている -->
+        {% for record in object_list %}
+
+        <!-- 列要素を配置 -->
+        <div class="col">
+          <div class="card shadow-sm">
+            <!-- svgタグをimgに変更 -->
+            <!-- scr属性を追加して2マイ登録するイメージのうち1枚目のイメージを出力するようにするURLを設定 -->
+            <img src="{{ record.image1.url }}"
+                class="bd-placeholder-img card-img-top"
+                width="100%" height="225"
+                xmlns="http://www.w3.org/2000/svg"
+                role="img" aria-label="Placeholder: Thumbnail"
+                preserveAspectRatio="xMidYMid slice"
+                focusable="false">
+                <title>Placeholder</title>
+                <rect width="100%" height="100%" fill="#55595c"/>
+                <!-- <text>～</text>を削除-->
+            </img>
+            <!-- タイトルとボタンを出力するブロック -->
+            <div class="card-body">
+              <p class="card-text">
+                <!-- titleフィールドを出力、投稿写真のタイトル -->
+                {{record.title}}                
+              </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <!-- 詳細ページを表示するボタン -->
+                  <button type="button"
+                          class="btn btn-sm btn-outline-secondary"
+onclick="location.href='{% url 'photo:photo_detail' record.pk %}'">
+                          View</button>
+<!-- <button>属性を設定　テンプレートタグuelを使ってリンク先のURLを生成 -->
+<!-- photo:photos_detailはurl.pyのphotoで定義されているURLパターンphoto_detailを参照 -->
+<!-- record.pkはクリックされたレコードの主キーを取得するもの -->
+
+                  <!-- 投稿写真のカテゴリを表示するボタン -->
+                  <button type="button"
+                          class="btn btn-sm btn-outline-secondary"
+onclick="location.href='{% url 'photo:photos_cat' category=record.category.id %}'">
+<!-- category=record.category.idはクリックされたレコードのカテゴリのidを取得する
+テンプレートタグurlを使ってリンク先のURLを生成 -->
+
+                          <!-- url.pyのphotoで定義されているURLパターンphoto_catを参照する -->
+                          {{record.category.title}}</button>
+                </div>
+                <!-- 投稿したユーザー名を出力-->
+                <!-- テンプレートタグurlを使ってリンク先のURLを生成 -->
+                <!-- photo:user_listはurl.pyのphotoで定義されているURLパターンuser_listを参照します -->
+                <a href="{% url 'photo:user_list' user=record.user.id %}">
+                  <small class="text-muted">
+                    {{record.user.username}}</small>
+                </a>
+              </div>
+            </div>
+          </div>
+        <!-- 列要素ここまで -->
+        </div>
+        <!-- forブロック終了 -->
+        {% endfor %}
+
+      <!-- 行要素ここまで -->
+      </div>
+    <!-- グリッドシステムここまで -->
+    </div>
+  </div>
